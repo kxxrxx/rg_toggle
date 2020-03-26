@@ -16,7 +16,7 @@
 
 #define SW1	     		GPIO_PIN_4		// PF4
 #define SW2      		GPIO_PIN_0		// PF0
-#define red_LED     	GPIO_PIN_1		// 0x02
+#define red_LED     		GPIO_PIN_1		// 0x02
 #define green_LED		GPIO_PIN_3		// 0x08
 
 //*****************************************************************************
