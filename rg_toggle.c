@@ -84,7 +84,7 @@ PortFunctionInit(void)
 			if(GPIOPinRead(GPIO_PORTF_BASE, SW1)==0x00) //SW1 is pressed, toggle green LED (PF3)
 			{
 			GPIOPinWrite(GPIO_PORTF_BASE, red_LED, 0x00);
-			SysCtlDelay( 2666667);
+			SysCtlDelay(2666667);
 			LED_data^=green_LED;	
 			GPIOPinWrite(GPIO_PORTF_BASE, green_LED, LED_data);
 			}
