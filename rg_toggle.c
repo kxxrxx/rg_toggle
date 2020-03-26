@@ -14,10 +14,10 @@
 #include "driverlib/gpio.h"
 #include "inc/tm4c123gh6pm.h"
 
-#define SW1	     						GPIO_PIN_4		// PF4
-#define SW2      						GPIO_PIN_0		// PF0
-#define red_LED           	GPIO_PIN_1		// 0x02
-#define green_LED					GPIO_PIN_3		// 0x08
+#define SW1	     		GPIO_PIN_4		// PF4
+#define SW2      		GPIO_PIN_0		// PF0
+#define red_LED     	GPIO_PIN_1		// 0x02
+#define green_LED		GPIO_PIN_3		// 0x08
 
 //*****************************************************************************
 void
@@ -38,7 +38,7 @@ PortFunctionInit(void)
     //Now modify the configuration of the pins that we unlocked.
     //
 	
-	  //
+    //
     // Enable pin PF0 for GPIOInput
     //
     GPIOPinTypeGPIOInput(GPIO_PORTF_BASE, GPIO_PIN_0);
@@ -58,43 +58,43 @@ PortFunctionInit(void)
     //
     GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_3);
 
-		// ****** Initialized by PinMux Utility *************** 
+// ****** Initialized by PinMux Utility *************** 
 	
     // enable pullup resistors using bitwise OR of PF4(0x10), PF0(0x01)
     GPIO_PORTF_PUR_R |= 0x11;        
 
 }
 
-int main(void)
-{
-    uint8_t LED_data;
-	
+	int main(void)
+	{
+		uint8_t LED_data;
+
 		//initialize the GPIO ports	
 		PortFunctionInit();
-	
+
 		while(1)
 		{
-					if(GPIOPinRead(GPIO_PORTF_BASE, SW2)==0x00) //SW2 is pressed, all off
-					{
-								GPIOPinWrite(GPIO_PORTF_BASE, red_LED, 0x00);
-								GPIOPinWrite(GPIO_PORTF_BASE, green_LED, 0x00);
-					}
-				 else
-				 {
-								if(GPIOPinRead(GPIO_PORTF_BASE, SW1)==0x00) //SW1 is pressed, toggle green LED (PF3)
-								{
-											GPIOPinWrite(GPIO_PORTF_BASE, red_LED, 0x00);
-									    SysCtlDelay( 2666667);
-											LED_data^=green_LED;	
-											GPIOPinWrite(GPIO_PORTF_BASE, green_LED, LED_data);
-								}
-								else //SW1 is not pressed, toggle red LED (PF3)
-								{
-											GPIOPinWrite(GPIO_PORTF_BASE, green_LED, 0x00);
-											SysCtlDelay(2666667);
-											LED_data^=red_LED;
-											GPIOPinWrite(GPIO_PORTF_BASE, red_LED, LED_data);
-								}
-					}
-	 }
+		if(GPIOPinRead(GPIO_PORTF_BASE, SW2)==0x00) //SW2 is pressed, all off
+		{
+			GPIOPinWrite(GPIO_PORTF_BASE, red_LED, 0x00);
+			GPIOPinWrite(GPIO_PORTF_BASE, green_LED, 0x00);
+		}
+		else
+		{
+			if(GPIOPinRead(GPIO_PORTF_BASE, SW1)==0x00) //SW1 is pressed, toggle green LED (PF3)
+			{
+			GPIOPinWrite(GPIO_PORTF_BASE, red_LED, 0x00);
+			SysCtlDelay( 2666667);
+			LED_data^=green_LED;	
+			GPIOPinWrite(GPIO_PORTF_BASE, green_LED, LED_data);
+			}
+			else //SW1 is not pressed, toggle red LED (PF3)
+			{
+				GPIOPinWrite(GPIO_PORTF_BASE, green_LED, 0x00);
+				SysCtlDelay(2666667);
+				LED_data^=red_LED;
+				GPIOPinWrite(GPIO_PORTF_BASE, red_LED, LED_data);
+			}
+		}
+	}
 }
