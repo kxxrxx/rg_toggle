@@ -20,9 +20,9 @@ green = PF3 = 0x08
 
 - toggle using bitwise xor because LED_data ^ LED_data = 0 and LED_data ^ 0 = LED_data
 
-- Considering the Tiva’s clock frequency is 16 MHz +/- 1%, one cycle duration is 1 / (16 * 10^6) = 6.25 x 10^(-8) seconds. Using SysCtlDelay, each iteration takes 3 CPU cycles, therefore the total delay per toggle would be 3 * (number of loops) * (1 / clock freq.).
+- Considering the Tiva’s clock frequency is 16 MHz +/- 1%, one cycle duration is 1 / (16 * 10^6) = 62.5 ns. Using SysCtlDelay, each iteration takes 3 CPU cycles, therefore the total delay (in seconds) per toggle would be (3 cycle/loop) * (number of loops) * (1 / clock freq.).
 
-- To get 0.5 second delays, we would need 0.5 / [3 * 6.25 x 10^(-8)] = 2,666,667 loops.
+- To get a 0.5 second delay, we would need 0.5s / [3 * 62.5 ns] = 2,666,667 loops.
 
 # rg_toggle2.c
 
