@@ -68,7 +68,7 @@ PortFunctionInit(void)
 
 }
 
-int DelayInSec(double delay_in_s)
+void DelayInSec(double delay_in_s)
 {
     // SysCtlClockGet() returns the processor clock frequency of the Tiva (16 MHz +/- 1%)
     // 1 clock cycle (in seconds) = 1 / SysCtlClockGet() second
