@@ -1,4 +1,4 @@
-# rg_toggle
+# rg_toggle.c
 
 The system has two input switches (SW1 and SW2) and two output LEDs (red and
 green LEDs). 
@@ -23,3 +23,15 @@ green = PF3 = 0x08
 - Considering the Tiva’s clock frequency is 16 MHz +/- 1%, one cycle duration is 1 / (16 * 10^6) = 6.25 x 10^(-8) seconds. Using SysCtlDelay, each iteration takes 3 CPU cycles, therefore the total delay per toggle would be 3 * (number of loops) * (1 / clock freq.).
 
 - To get 0.5 second delays, we would need 0.5 / [3 * 6.25 x 10^(-8)] = 2,666,667 loops.
+
+# rg_toggle2.c
+
+- defines a new function called DelayInSec which SysCtlDelay(delay_in_s * (SysCtlClockGet()  / 3));
+SysCtlClockGet() returns the processor clock frequency of the Tiva (16 MHz +/- 1%)
+1 clock cycle (in seconds) = 1 / SysCtlClockGet() second
+1 SysCtlDelay = 3 clock cycles = 3 / SysCtlClockGet() 
+1 second = SysCtlClockGet()  / 3
+
+Check TivaWare Peripheral Driver Library for more info:
+SysCtlClockGet (p. 488) 
+SysCtlDelay (p. 493)
