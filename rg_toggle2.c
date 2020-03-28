@@ -2,6 +2,10 @@
 // If SW1 is not pressed, the red LED will be toggled every half second (the green LED will be off).
 // Whenever SW2 is pressed (no matter SW1 is pressed or not), all LEDs will be off.
 
+// Considering the Tiva’s clock frequency is 16 MHz +/- 1%, one cycle duration is 1 / (16 * 10^6) = 62.5 ns. 
+// Using SysCtlDelay, each iteration takes 3 CPU cycles, therefore the 
+// total delay (in seconds) per toggle would be (3 cycle/loop) * (number of loops) * (1 / clock freq.).
+// To get 0.5 second delays, we would need 0.5s / [3 * 62.5 ns] = 2,666,667 loops.
 
 //*****************************************************************************
 
@@ -82,31 +86,32 @@ int main(void)
 {
     uint8_t LED_data;
 	
-    //initialize the GPIO ports	
+    // initializes the GPIO ports	
     PortFunctionInit();
 	
     while(1)
    {
 	if(GPIOPinRead(GPIO_PORTF_BASE, SW2)==0x00) //SW2 is pressed, all off
 	{
-		GPIOPinWrite(GPIO_PORTF_BASE, red_LED, 0x00);
-		GPIOPinWrite(GPIO_PORTF_BASE, green_LED, 0x00);
+		GPIOPinWrite(GPIO_PORTF_BASE, red_LED, 0x00);	// red LED off
+		GPIOPinWrite(GPIO_PORTF_BASE, green_LED, 0x00); // green LED off
+
 	}
 	else
 	{
-		if(GPIOPinRead(GPIO_PORTF_BASE, SW1)==0x00) //SW1 is pressed, toggle green LED (PF3)
+		if(GPIOPinRead(GPIO_PORTF_BASE, SW1)==0x00) //SW1 is pressed 
 		{
-			GPIOPinWrite(GPIO_PORTF_BASE, red_LED, 0x00);
-			SysCtlDelay(2666667);
-			LED_data^=green_LED;	
-			GPIOPinWrite(GPIO_PORTF_BASE, green_LED, LED_data);
+			GPIOPinWrite(GPIO_PORTF_BASE, red_LED, 0x00);	// red LED off
+			SysCtlDelay(2666667);	// about 0.5 second delay
+			LED_data^=green_LED;	// toggles green LED (PF3)
+			GPIOPinWrite(GPIO_PORTF_BASE, green_LED, LED_data); // green LED on
 		}
 		else //SW1 is not pressed, toggle red LED (PF3)
 		{
-			GPIOPinWrite(GPIO_PORTF_BASE, green_LED, 0x00);
-			DelayInSec(0.5);
-			LED_data^=red_LED;
-			GPIOPinWrite(GPIO_PORTF_BASE, red_LED, LED_data);
+			GPIOPinWrite(GPIO_PORTF_BASE, green_LED, 0x00);	// green LED off
+			DelayInSec(0.5);   // about 0.5 second delay
+			LED_data^=red_LED; // bitwise XOR red LED (PF1)
+			GPIOPinWrite(GPIO_PORTF_BASE, red_LED, LED_data); // red LED on
 		}
 	}
     }
