@@ -72,7 +72,7 @@ void DelayInSec(double delay_in_s)
 {
     // SysCtlClockGet() returns the processor clock frequency of the Tiva (16 MHz +/- 1%)
     // 1 clock cycle (in seconds) = 1 / SysCtlClockGet() second
-    // 1 SysCtlDelay = 3 clock cycles = 3 / SysCtlClockGet() 
+    // 1 loop of SysCtlDelay = 3 clock cycles = 3 / SysCtlClockGet() 
     // 1 second = SysCtlClockGet()  / 3
     SysCtlDelay(delay_in_s * (SysCtlClockGet()  / 3));
 }
